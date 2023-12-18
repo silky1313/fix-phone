@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="css/manage.css" />
+    <script src="bootstrap/js/jquery-2.1.1.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <!-- 图像头start -->
+      <div class="row">
+        <img class="full-screen-250px" src="image/head2.jpg" />
+      </div>
+      <!-- 图像头end -->
+      <!-- 菜单start -->
+      <div class="row margin-top-15px">
+        <!-- 左边的菜单start -->
+        <div class="col-md-3">
+          <div class="panel panel-primary">
+            <!-- Default panel contents -->
+            <div class="panel-heading">手机店维修服务系统v2.0</div>
+            <!-- List group -->
+            <ul class="list-group">
+              <a href="#" class="list-group-item">客户接待</a>
+              <a href="#" class="list-group-item">维修管理</a>
+              <a href="#" class="list-group-item">配件查询</a>
+              <a href="#" class="list-group-item">供应商管理</a>
+              <a href="#" class="list-group-item">账户管理</a>
+            </ul>
+          </div>
+        </div>
+        <!-- 左边的菜单end -->
+        <!-- 右边的菜单start -->
+        <div class="col-md-9">
+          <div class="panel panel-primary">
+            <!-- Default panel contents -->
+            <div class="panel-heading">客户业务代理列表</div>
+            <!-- 菜单表单start -->
+            <div class="panel-body">
+              <form class="form-inline">
+                <div class="form-group">
+                  <label for="exampleInputName2">客户姓名：</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    placeholder="请输入姓名"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail2">客户电话：</label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="phone"
+                    placeholder="请输入电话"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail2">维修项目：</label>
+                  <select class="form-control">
+                    <option>电池</option>
+                    <option>屏幕</option>
+                    <option>背板</option>
+                    <option>主板</option>
+                    <option>摄像头</option>
+                    <option>
+                      其它：
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="item"
+                        placeholder="请输入内容"
+                      />
+                    </option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-warning">保存</button>
+              </form>
+            </div>
+            <!-- 菜单表单end -->
+            <!-- List group -->
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>任务编号</th>
+                  <th>客户姓名</th>
+                  <th>客户电话</th>
+                  <th>维修项目</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>T123123123</td>
+                  <td>蔡徐坤</td>
+                  <td>1111111232</td>
+                  <td>换电池</td>
+                  <td>正在维修</td>
+                  <td>
+                    <button class="btn btn-success">查看详情</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>T123123123</td>
+                  <td>蔡徐坤</td>
+                  <td>1999123232</td>
+                  <td>修手机</td>
+                  <td>等待中</td>
+                  <td>
+                    <button class="btn btn-primary">查看详情</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>T123123123</td>
+                  <td>蔡徐坤</td>
+                  <td>1873434232</td>
+                  <td>修手机</td>
+                  <td>等待中</td>
+                  <td>
+                    <button class="btn btn-warning">查看详情</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- 右边的菜单end -->
+      </div>
+      <!-- 菜单end -->
+    </div>
+  </body>
+</html>

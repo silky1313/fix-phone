@@ -1,0 +1,38 @@
+.full-screen-250px {
+  width: 100%;
+  height: 250px;
+}
+
+.full-screen-300px {
+  width: 100%;
+  height: 300px;
+}
+/* margin 15px, 30px */
+.margin-top-15px {
+  margin-top: 15px;
+}
+
+.margin-top-30px {
+  margin-top: 30px;
+}
+
+table tr td,
+table te th {
+  text-align: center;
+}
+
+.search-form {
+  margin: 15px 15px;
+}
+
+.search-input {
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+  color: cornflowerblue
+}
+
+
+.search-list {
+  margin: 30px 5px;
+}

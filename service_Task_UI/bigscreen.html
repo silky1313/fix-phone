@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bigscreen</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="css/manage.css" />
+    <script src="bootstrap/js/jquery-2.1.1.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <!-- 顶部图片 -->
+      <div class="row">
+        <img src="image/brand.png" class="full-screen-300px" />
+      </div>
+
+      <div class="row">
+        <!-- 左边进度 -->
+        <div class="col-md-9 margin-top-15px">
+          <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">业务处理进度</div>
+
+            <!-- Table -->
+            <table class="table">
+              <tr>
+                <td width="15%">T-20210304108</td>
+                <td>
+                  <div class="progress">
+                    <div
+                      class="progress-bar progress-bar-success active"
+                      role="progressbar"
+                      aria-valuenow="45"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                      style="width: 100%"
+                    >
+                      100%
+                    </div>
+                  </div>
+                </td>
+                <td width="15%">2023-12-18 16:34:45</td>
+                <td width="15%">取机</td>
+              </tr>
+              <tr>
+                <td width="15%">T-20210304109</td>
+                <td>
+                  <div class="progress">
+                    <div
+                      class="progress-bar progress-bar-striped active"
+                      role="progressbar"
+                      aria-valuenow="45"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                      style="width: 45%"
+                    >
+                      45%
+                    </div>
+                  </div>
+                </td>
+                <td width="15%">2023-12-18 16:34:45</td>
+                <td width="15%">取机</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- 右边条目 -->
+        <div class="col-md-3 margin-top-15px">
+          <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">任务条目</div>
+
+            <!-- Table -->
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>任务编号</th>
+                  <th>维修项目</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="info">
+                  <td>T-20210304108</td>
+                  <td>换电池</td>
+                </tr>
+                <tr>
+                  <td>T-20210304109</td>
+                  <td>换主板</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
