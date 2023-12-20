@@ -18,10 +18,7 @@ public class AccountDao {
             account = query.query(conn, sql, new BeanHandler<Account>(Account.class), username, password);
         } catch (Exception ignored) {
         } finally {
-            try {
-                DBCommon.closeConnection(conn);
-            } catch (Exception ignored) {
-            }
+            DBCommon.closeConnection(conn);
         }
         return account;
     }

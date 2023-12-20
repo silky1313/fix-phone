@@ -22,6 +22,9 @@ public class CorsFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
+        response.setContentType("text/json");
+        response.setCharacterEncoding("UTF-8");
+
         // 响应标头指定 指定可以访问资源的URI路径
         response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
 

@@ -25,7 +25,7 @@ public class DBCommon {
         return null;
     }
 
-    public static void closeConnection(Connection conn) throws SQLException {
+    public static void closeConnection(Connection conn) {
         try {
             if (conn != null) {
                 conn.close();
