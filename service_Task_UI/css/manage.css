@@ -33,7 +33,24 @@ table te th {
   color: cornflowerblue
 }
 
-
 .search-list {
   margin: 30px 5px;
+}
+
+.logo {
+  width: 220px;
+  height: 220px;
+  border-radius: 38px;
+  margin-top: 250px;
+}
+
+.login-form {
+  margin-left: 100px;
+  margin-top: 190px;
+}
+
+.warning-text {
+  color: red;
+  font-weight: bold;
+  margin-top: 4px;
 }
