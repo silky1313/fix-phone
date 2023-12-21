@@ -3,6 +3,7 @@ package com.ccsu.task.servicetask.web;
 import com.ccsu.task.servicetask.dao.AccountDao;
 import com.ccsu.task.servicetask.entity.Account;
 import com.ccsu.task.servicetask.entity.AjaxResult;
+import com.ccsu.task.servicetask.utils.JwtUtil;
 import com.google.gson.Gson;
 
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 
 @WebServlet("/AccountServlet")
 public class AccountServlet extends HttpServlet {
@@ -28,7 +30,14 @@ public class AccountServlet extends HttpServlet {
 
         PrintWriter out = response.getWriter();
         if (silky != null) {
-            json = gson.toJson(AjaxResult.success("查询成功", silky));
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("admin_name", silky.getAdmin_name());
+            String token = JwtUtil.createToken(map);
+            map.put("token", token);
+
+            json = gson.toJson(AjaxResult.success("查询成功", map));
+        } else{
+            json = gson.toJson(AjaxResult.fail("账号或密码错误", 400));
         }
         out.println(json);
     }

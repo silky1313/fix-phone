@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="css/manage.css" />
     <script src="bootstrap/js/jquery-2.1.1.js"></script>
     <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/check.js"></script>
   </head>
   <body>
     <div class="container-fluid">
@@ -21,7 +23,10 @@
         <div class="col-md-3">
           <div class="panel panel-primary">
             <!-- Default panel contents -->
-            <div class="panel-heading">手机店维修服务系统v2.0</div>
+            <div class="panel-heading">
+              手机维修管理系统
+              <span id="info"></span>
+            </div>
             <!-- List group -->
             <ul class="list-group">
               <a href="#" class="list-group-item">客户接待</a>
@@ -29,6 +34,13 @@
               <a href="#" class="list-group-item">配件查询</a>
               <a href="#" class="list-group-item">供应商管理</a>
               <a href="#" class="list-group-item">账户管理</a>
+              <a
+                href="javascript:void(0)"
+                onclick="exitLogin()"
+                class="list-group-item"
+              >
+                退出登录
+              </a>
             </ul>
           </div>
         </div>
@@ -134,4 +146,16 @@
       <!-- 菜单end -->
     </div>
   </body>
+  <script>
+    function exitLogin() {
+      let result = confirm("确定要退出登录吗？");
+      if (result) {
+        localStorage.removeItem("admin_name");
+        localStorage.removeItem("token");
+        location.href = "login.html";
+      }
+    }
+
+    $("#info").text("【 " + localStorage.getItem("admin_name") + " 】");
+  </script>
 </html>

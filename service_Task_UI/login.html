@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />  
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="css/manage.css" />
@@ -99,6 +99,8 @@
             function (data) {
               if (data.code >= 200 && data.code <= 299) {
                 location.href = "manage.html";
+                localStorage.setItem("admin_name", data.data.admin_name);
+                localStorage.setItem("token", data.data.token);
               } else {
                 that.msg = data.message;
               }
