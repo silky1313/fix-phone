@@ -9,9 +9,10 @@
     <script src="bootstrap/js/bootstrap.js"></script>
     <script src="js/config.js"></script>
     <script src="js/check.js"></script>
+    <script src="js/vue.global.js"></script>
   </head>
   <body>
-    <div class="container-fluid">
+    <div class="container-fluid" id="app">
       <!-- 图像头start -->
       <div class="row">
         <img class="full-screen-250px" src="image/head2.jpg" />
@@ -29,14 +30,26 @@
             </div>
             <!-- List group -->
             <ul class="list-group">
-              <a href="#" class="list-group-item">客户接待</a>
+              <a
+                href="javascript:void(0)"
+                @click="showPanel('cus')"
+                class="list-group-item"
+              >
+                客户接待
+              </a>
               <a href="#" class="list-group-item">维修管理</a>
-              <a href="#" class="list-group-item">配件查询</a>
+              <a
+                href="javascript:void(0)"
+                @click="showPanel('fitting')"
+                class="list-group-item"
+              >
+                配件查询
+              </a>
               <a href="#" class="list-group-item">供应商管理</a>
               <a href="#" class="list-group-item">账户管理</a>
               <a
                 href="javascript:void(0)"
-                onclick="exitLogin()"
+                @click="exitLogin()"
                 class="list-group-item"
               >
                 退出登录
@@ -45,8 +58,8 @@
           </div>
         </div>
         <!-- 左边的菜单end -->
-        <!-- 右边的菜单start -->
-        <div class="col-md-9">
+        <!-- 右边的cusPanel start -->
+        <div class="col-md-9" v-show="cusView">
           <div class="panel panel-primary">
             <!-- Default panel contents -->
             <div class="panel-heading">客户业务代理列表</div>
@@ -107,55 +120,151 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>T123123123</td>
-                  <td>蔡徐坤</td>
-                  <td>1111111232</td>
-                  <td>换电池</td>
-                  <td>正在维修</td>
+                <tr v-for="item in tasks">
+                  <td>{{item.task_no}}</td>
+                  <td>{{item.cus_name}}</td>
+                  <td>{{item.cus_phone}}</td>
+                  <td>{{item.service_item}}</td>
                   <td>
-                    <button class="btn btn-success">查看详情</button>
+                    {{item.task_state == 0 ? "录单完成":(item.tak_state == 1 ?
+                    "维修中" : "等待取机") }}
                   </td>
-                </tr>
-                <tr>
-                  <td>T123123123</td>
-                  <td>蔡徐坤</td>
-                  <td>1999123232</td>
-                  <td>修手机</td>
-                  <td>等待中</td>
                   <td>
-                    <button class="btn btn-primary">查看详情</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>T123123123</td>
-                  <td>蔡徐坤</td>
-                  <td>1873434232</td>
-                  <td>修手机</td>
-                  <td>等待中</td>
-                  <td>
-                    <button class="btn btn-warning">查看详情</button>
+                    <button
+                      v-show="item.task_state == 0"
+                      class="btn btn-warning"
+                      @click="deleteTask(item.task_id)"
+                    >
+                      删除维修单
+                    </button>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
-        <!-- 右边的菜单end -->
+        <!-- 右边的cusPanel end -->
+
+        <!-- 右边的配件panel start -->
+        <div class="col-md-9" v-show="fittingView">
+          <div class="panel panel-primary">
+            <!-- Default panel contents -->
+            <div class="panel-heading">配件列表</div>
+            <!-- List group -->
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>配件编号</th>
+                  <th>配件名称</th>
+                  <th>库存数量</th>
+                  <th>配件厂地</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="fitting in fittings">
+                  <td>{{fitting.fit_id}}</td>
+                  <td>{{fitting.fit_name}}</td>
+                  <td>{{fitting.fit_qty}}</td>
+                  <td>{{fitting.fit_factory}}</td>
+                  <td>
+                    <button class="btn btn-success">查看详情</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- 右边的配件panel end-->
       </div>
       <!-- 菜单end -->
     </div>
   </body>
   <script>
-    function exitLogin() {
-      let result = confirm("确定要退出登录吗？");
-      if (result) {
-        localStorage.removeItem("admin_name");
-        localStorage.removeItem("token");
-        location.href = "login.html";
-      }
-    }
+    const { createApp } = Vue;
+    createApp({
+      data() {
+        return {
+          code: "",
+          msg: "",
+          task: {},
+          cusView: true,
+          fittingView: false,
+          fittings: [],
+          tasks: [], //任务数据
+        };
+      },
+      mounted() {
+        $("#info").text("【 " + localStorage.getItem("admin_name") + " 】");
+        this.loadTaskData();
+      },
+      methods: {
+        exitLogin: function () {
+          let result = confirm("确定要退出登录吗？");
+          if (result) {
+            localStorage.removeItem("admin_name");
+            localStorage.removeItem("token");
+            location.href = "login.html";
+          }
+        },
+        login: function () {
+          var that = this;
+          var admin_name = $("#admin_name").val();
+          var admin_password = $("#admin_password").val();
+          var url = base_url + "AccountServlet";
+          console.log(url);
 
-    $("#info").text("【 " + localStorage.getItem("admin_name") + " 】");
+          $.post(
+            url,
+            { admin_name: admin_name, admin_password: admin_password },
+            function (data) {
+              if (data.code >= 200 && data.code <= 299) {
+                location.href = "manage.html";
+                localStorage.setItem("admin_name", data.data.admin_name);
+                localStorage.setItem("token", data.data.token);
+              } else {
+                that.msg = data.message;
+              }
+            }
+          );
+        },
+        showPanel: function (panelName) {
+          if (panelName == "cus") {
+            this.cusView = true;
+            this.fittingView = false;
+            this.loadTaskData();
+          } else {
+            this.loadFittig();
+            this.cusView = false;
+            this.fittingView = true;
+          }
+        },
+        loadFittig: function () {
+          var that = this;
+          var url = base_url + "/FittingServlet";
+          $.post(url, function (data) {
+            console.log(data);
+            if (data.code >= 200 && data.code <= 299) {
+              that.fittings = data.data;
+            } else {
+              that.msg = data.message;
+            }
+          });
+        },
+        loadTaskData: function () {
+          var that = this;
+          var url = base_url + "/TaskServlet";
+
+          $.post(url, { choose: "findAllTasks" }, function (data) {
+            console.log(data);
+            if (data.code >= 200 && data.code <= 299) {
+              that.tasks = data.data;
+            } else {
+              that.msg = data.message;
+            }
+          });
+        },
+      },
+    }).mount("#app");
   </script>
 </html>

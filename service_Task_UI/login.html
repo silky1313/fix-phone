@@ -11,7 +11,7 @@
     <script src="js/config.js"></script>
     <style>
       body {
-        background: url(image/background.jpg) no-repeat;
+        background: url(image/background.svg) no-repeat;
         background-size: 100% 100%;
         background-attachment: fixed;
       }
@@ -90,7 +90,7 @@
           var that = this;
           var admin_name = $("#admin_name").val();
           var admin_password = $("#admin_password").val();
-          var url = base_url + "AccountServlet";
+          var url = base_url + "/AccountServlet";
           console.log(url);
 
           $.post(

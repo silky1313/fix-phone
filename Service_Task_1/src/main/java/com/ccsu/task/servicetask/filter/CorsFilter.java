@@ -18,7 +18,6 @@ public class CorsFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
-        System.out.println("Filter 过滤器 执行 了");
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
@@ -26,7 +25,7 @@ public class CorsFilter implements Filter {
         response.setCharacterEncoding("UTF-8");
 
         // 响应标头指定 指定可以访问资源的URI路径
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Origin", "*");
 
         //响应标头指定响应访问所述资源到时允许的一种或多种方法
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");

@@ -1,10 +1,9 @@
 let token = localStorage.getItem("token");
 
 if (!token) {
-  //有token去服务器检查
-  $.post(base_url + "/checkServlet", { token: token }, function (data) {
-    if (data.data === "false") {
-      //token有效
+  $.post(base_url + "/CheckServlet", { token: token }, function (data) {
+    console.log(data);
+    if (data.data === false) {
       location.href = "login.html";
     }
   });

@@ -18,8 +18,9 @@
 }
 
 table tr td,
-table te th {
+table tr th {
   text-align: center;
+  vertical-align: middle;
 }
 
 .search-form {
@@ -41,12 +42,12 @@ table te th {
   width: 220px;
   height: 220px;
   border-radius: 38px;
-  margin-top: 250px;
+  margin-top: 300px;
 }
 
 .login-form {
   margin-left: 100px;
-  margin-top: 190px;
+  margin-top: 290px;
 }
 
 .warning-text {
