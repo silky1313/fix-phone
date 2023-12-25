@@ -6,6 +6,7 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.List;
 
 public class TaskDao {
@@ -44,8 +45,6 @@ public class TaskDao {
             conn = DBCommon.getConnection();
             QueryRunner query = new QueryRunner();
             String task_no = TaskCode.createTaskNo();
-            System.out.println(task);
-            System.out.println(task_no);
             String sql = "insert into tb_task(cus_name, cus_phone, service_item, task_no, task_time, task_state)" +
                     "value(?, ?, ?, ?, now(), 0)";
             row = query.execute(conn, sql, task.getCus_name(), task.getCus_phone(), task.getService_item(), task_no);
@@ -56,9 +55,24 @@ public class TaskDao {
         return row;
     }
 
+    public int changeState(int id, int state) {
+        Connection conn = null;
+        int row = 0;
+        try {
+            conn = DBCommon.getConnection();
+            QueryRunner query = new QueryRunner();
+            String sql = "update tb_task set task_state=? where task_id=?";
+            row = query.update(conn, sql, state, id);
+        } catch (Exception ignored) {
+        } finally {
+            DBCommon.closeConnection(conn);
+        }
+        return row;
+    }
+
 
     public static void main(String[] args) {
         TaskDao taskDao = new TaskDao();
-        System.out.println(taskDao.findAllTask());
+        System.out.println(taskDao.changeState(11, 2));
     }
 }

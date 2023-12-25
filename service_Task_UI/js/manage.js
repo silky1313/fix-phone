@@ -30,7 +30,6 @@ createApp({
       var admin_name = $("#admin_name").val();
       var admin_password = $("#admin_password").val();
       var url = base_url + "AccountServlet";
-      console.log(url);
 
       $.post(
         url,
@@ -67,8 +66,7 @@ createApp({
     loadFittig: function () {
       var that = this;
       var url = base_url + "/FittingServlet";
-      $.post(url, function (data) {
-        console.log(data);
+      $.post(url, { choose: "findAllFittings" }, function (data) {
         if (data.code >= 200 && data.code <= 299) {
           that.fittings = data.data;
         } else {
@@ -81,7 +79,6 @@ createApp({
       var url = base_url + "/TaskServlet";
 
       $.post(url, { choose: "findAllTasks" }, function (data) {
-        console.log(data);
         if (data.code >= 200 && data.code <= 299) {
           that.tasks = data.data;
         } else {
@@ -132,6 +129,37 @@ createApp({
           alert(data.message);
         }
       });
+    },
+    changeState: function (id, state) {
+      let url = base_url + "/TaskServlet";
+      let that = this;
+      this.task.choose = "updateTask";
+      this.task.id = id;
+      this.task.state = state;
+      $.post(url, this.task, function (data) {
+        if (data.code >= 200 && data.code <= 299) {
+          that.loadTaskData();
+        }
+        alert("状态修改成功");
+      });
+    },
+    updatefittingQuantity: function (id) {
+      let url = base_url + "/FittingServlet";
+      let that = this;
+      let inputId = "quantity-" + id;
+      quantity = document.getElementById(inputId).value;
+      document.getElementById(inputId).value = "";
+      console.log(quantity);
+      $.post(
+        url,
+        { choose: "updateFitting", fit_id: id, fit_qty: quantity },
+        function (data) {
+          if (data.code >= 200 && data.code <= 299) {
+            that.loadFittig();
+          }
+          alert(data.message);
+        }
+      );
     },
   },
 }).mount("#app");

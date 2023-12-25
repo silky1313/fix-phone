@@ -5,6 +5,11 @@
     <title></title>
     <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="css/manage.css" />
+    <!-- animate -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
     <script src="bootstrap/js/jquery-2.1.1.js"></script>
     <script src="bootstrap/js/bootstrap.js"></script>
     <script src="js/config.js"></script>
@@ -18,6 +23,7 @@
         <img class="full-screen-250px" src="image/head2.jpg" />
       </div>
       <!-- 图像头end -->
+
       <!-- 菜单start -->
       <div class="row margin-top-15px">
         <!-- 左边的菜单start -->
@@ -49,9 +55,8 @@
                 @click="showPanel('fitting')"
                 class="list-group-item"
               >
-                配件查询
+                库存查询
               </a>
-              <a href="#" class="list-group-item">供应商管理</a>
               <a href="#" class="list-group-item">账户管理</a>
               <a
                 href="javascript:void(0)"
@@ -66,7 +71,10 @@
         <!-- 左边的菜单end -->
 
         <!-- 右边的cusPanel start -->
-        <div class="col-md-9" v-show="cusView">
+        <div
+          class="animate__animated animate__bounceInRight col-md-9"
+          v-show="cusView"
+        >
           <div class="panel panel-primary">
             <!-- Default panel contents -->
             <div class="panel-heading">客户业务代理列表</div>
@@ -143,10 +151,14 @@
             </table>
           </div>
         </div>
+
         <!-- 右边的cusPanel end -->
 
-        <!-- 右边的配件panel start -->
-        <div class="col-md-9" v-show="fittingView">
+        <!-- 右边的库存panel start -->
+        <div
+          class="animate__animated animate__bounceInRight col-md-9"
+          v-show="fittingView"
+        >
           <div class="panel panel-primary">
             <!-- Default panel contents -->
             <div class="panel-heading">配件列表</div>
@@ -158,7 +170,7 @@
                   <th>配件名称</th>
                   <th>库存数量</th>
                   <th>配件厂地</th>
-                  <th>操作</th>
+                  <th>修改数量</th>
                 </tr>
               </thead>
               <tbody>
@@ -168,17 +180,35 @@
                   <td>{{fitting.fit_qty}}</td>
                   <td>{{fitting.fit_factory}}</td>
                   <td>
-                    <button class="btn btn-success">查看详情</button>
+                    <form class="form-inline">
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          :id="'quantity-' + fitting.fit_id"
+                          placeholder="请输入修改数量"
+                        />
+                      </div>
+                      <button
+                        class="btn btn-success"
+                        @click.prevent="updatefittingQuantity(fitting.fit_id)"
+                      >
+                        确认修改
+                      </button>
+                    </form>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
-        <!-- 右边的配件panel end-->
+        <!-- 右边的库存panel end-->
 
         <!-- 右边的维修fixPanel start -->
-        <div class="col-md-9" v-show="fixView">
+        <div
+          class="animate__animated animate__bounceInRight col-md-9"
+          v-show="fixView"
+        >
           <div class="panel panel-primary">
             <!-- Default panel contents -->
             <div class="panel-heading">维修业务列表</div>
@@ -208,14 +238,14 @@
                     <button
                       v-show="item.task_state == 0"
                       class="btn btn-success"
-                      @click=""
+                      @click="changeState(item.task_id, 1);"
                     >
                       开始维修
                     </button>
                     <button
                       v-show="item.task_state == 1"
                       class="btn btn-warning"
-                      @click=""
+                      @click="changeState(item.task_id, 2)"
                     >
                       完成维修
                     </button>
