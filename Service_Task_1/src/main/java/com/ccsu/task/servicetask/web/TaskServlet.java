@@ -25,12 +25,12 @@ public class TaskServlet extends HttpServlet {
 
         if (choose.equals("findAllTasks")) {
             List<Task> tasks = taskDao.findAllTask();
-            if(tasks != null && !tasks.isEmpty()) {
-                result =  AjaxResult.success("任务数据查询成功", tasks);
-            } else{
+            if (tasks != null && !tasks.isEmpty()) {
+                result = AjaxResult.success("任务数据查询成功", tasks);
+            } else {
                 result = AjaxResult.fail("任务数据查询失败");
             }
-        } else if(choose.equals("delete")) {
+        } else if (choose.equals("delete")) {
             String id = request.getParameter("id");
             int success = taskDao.deleteTaskById(Integer.parseInt(id));
 
@@ -38,6 +38,19 @@ public class TaskServlet extends HttpServlet {
                 result = AjaxResult.success("删除成功");
             } else {
                 result = AjaxResult.fail("删除失败");
+            }
+        } else if (choose.equals("insertTask")) {
+            String cus_name = request.getParameter("cus_name");
+            String cus_phone = request.getParameter("cus_phone");
+            String service_item = request.getParameter("service_item");
+
+            Task task = new Task(cus_name, cus_phone, service_item);
+
+            int row = taskDao.insertTask(task);
+            if (row == 1) {
+                result = AjaxResult.success("添加成功");
+            } else {
+                result = AjaxResult.fail("添加失败");
             }
         }
 

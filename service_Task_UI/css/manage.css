@@ -31,7 +31,7 @@ table tr th {
   text-align: center;
   font-size: 15px;
   font-weight: bold;
-  color: cornflowerblue
+  color: cornflowerblue;
 }
 
 .search-list {
@@ -54,4 +54,10 @@ table tr th {
   color: red;
   font-weight: bold;
   margin-top: 4px;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 150px;
 }

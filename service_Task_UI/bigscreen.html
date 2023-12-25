@@ -8,9 +8,12 @@
     <link rel="stylesheet" href="css/manage.css" />
     <script src="bootstrap/js/jquery-2.1.1.js"></script>
     <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="js/vue.global.js"></script>
+    <script src="js/config.js"></script>
   </head>
+
   <body>
-    <div class="container-fluid">
+    <div class="container-fluid" id="app">
       <!-- 顶部图片 -->
       <div class="row">
         <img src="image/brand.png" class="full-screen-300px" />
@@ -25,8 +28,8 @@
 
             <!-- Table -->
             <table class="table">
-              <tr>
-                <td width="15%">T-20210304108</td>
+              <tr v-for="item in tasks">
+                <td width="15%">{{item.task_no}}</td>
                 <td>
                   <div class="progress">
                     <div
@@ -38,25 +41,6 @@
                       style="width: 100%"
                     >
                       100%
-                    </div>
-                  </div>
-                </td>
-                <td width="15%">2023-12-18 16:34:45</td>
-                <td width="15%">取机</td>
-              </tr>
-              <tr>
-                <td width="15%">T-20210304109</td>
-                <td>
-                  <div class="progress">
-                    <div
-                      class="progress-bar progress-bar-striped active"
-                      role="progressbar"
-                      aria-valuenow="45"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                      style="width: 45%"
-                    >
-                      45%
                     </div>
                   </div>
                 </td>
@@ -82,13 +66,9 @@
                 </tr>
               </thead>
               <tbody>
-                <tr class="info">
-                  <td>T-20210304108</td>
-                  <td>换电池</td>
-                </tr>
-                <tr>
-                  <td>T-20210304109</td>
-                  <td>换主板</td>
+                <tr v-for="item in tasks" class="info">
+                  <td>{{item.task_no}}</td>
+                  <td>{{item.service_item}}</td>
                 </tr>
               </tbody>
             </table>
@@ -97,4 +77,5 @@
       </div>
     </div>
   </body>
+  <script src="js/bigscreen.js"></script>
 </html>

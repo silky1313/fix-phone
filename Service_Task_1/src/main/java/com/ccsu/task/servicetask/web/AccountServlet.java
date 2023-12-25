@@ -24,7 +24,7 @@ public class AccountServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String admin_name = request.getParameter("admin_name");
         String admin_password = request.getParameter("admin_password");
-        String json = gson.toJson(AjaxResult.fail("账号或者密码错误"));
+        String json = null;
 
         Account silky = accountDao.findAccountByNameAndPassword(admin_name, admin_password);
 
