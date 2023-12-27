@@ -20,14 +20,13 @@ public class TaskServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        AjaxResult result = null;
         String choose = request.getParameter("choose");
-        result = switch (choose) {
+        AjaxResult result  = switch (choose) {
             case "findAllTasks" -> taskService.findAllTasks();
-            case "delete" -> taskService.deleteTaskById(request);
             case "insertTask" -> taskService.insertTask(request);
             case "updateTask" -> taskService.updateTask(request);
-            default -> result;
+            case "select" -> taskService.findByPhone(request);
+            default -> null;
         };
 
         String json = gson.toJson(result);

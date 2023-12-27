@@ -6,7 +6,6 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.util.List;
 
 public class TaskDao {
@@ -15,7 +14,7 @@ public class TaskDao {
         try {
             conn = DBCommon.getConnection();
             QueryRunner query = new QueryRunner();
-            String sql = "select * from tb_task";
+            String sql = "select * from tb_task where task_state<=2 and task_state>=0";
             return query.query(conn, sql, new BeanListHandler<Task>(Task.class));
         } catch (Exception ignored) {
         } finally {
@@ -70,9 +69,36 @@ public class TaskDao {
         return row;
     }
 
+    /*
+     * 根据手机号或者订单编号查订单
+     * */
+    public List findByPhone(String phone) {
+        Connection conn = null;
+        List list = null;
+        try {
+            //手机号查询
+            conn = DBCommon.getConnection();
+            String sql = "select * from tb_task where cus_phone=?";
+            QueryRunner qr = new QueryRunner();
+            list = qr.query(conn, sql, phone, new BeanListHandler<Task>(Task.class));
+            if (list.isEmpty()) {
+                //订单编号查询
+                String sql2 = "select * from tb_task where task_no=?";
+                QueryRunner qr2 = new QueryRunner();
+                list = qr.query(conn, sql2, phone, new BeanListHandler<Task>(Task.class));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBCommon.closeConnection(conn);
+        }
+        return list;
+    }
+
 
     public static void main(String[] args) {
         TaskDao taskDao = new TaskDao();
-        System.out.println(taskDao.changeState(11, 2));
+        System.out.println(taskDao.findAllTask());
     }
 }

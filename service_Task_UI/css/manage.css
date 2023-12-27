@@ -61,3 +61,12 @@ table tr th {
   justify-content: space-between;
   margin: 0 150px;
 }
+
+.margin-50px {
+  margin-left: 50px;
+  padding: 10px 0px;
+}
+
+.grey-option {
+  color: #CCCCCC;
+}

@@ -1,8 +1,6 @@
 package com.ccsu.task.servicetask.web;
 
-import com.ccsu.task.servicetask.dao.FittingDao;
 import com.ccsu.task.servicetask.entity.AjaxResult;
-import com.ccsu.task.servicetask.entity.Fitting;
 import com.ccsu.task.servicetask.service.FittingService;
 import com.google.gson.Gson;
 
@@ -24,7 +22,9 @@ public class FittingServlet extends HttpServlet {
         String choose = request.getParameter("choose");
         result = switch (choose) {
             case "findAllFittings" -> fittingService.findAllFittings();
-            case "updateFitting" -> fittingService.updateFitting(request);
+            case "updateFittingQuantity" -> fittingService.updateFittingQuantity(request);
+            case "updateFittingQuantityDecrease" -> fittingService.updateFittingQuantityDecrease(request);
+            case "insertFitting" -> fittingService.insertFitting(request);
             default -> null;
         };
 

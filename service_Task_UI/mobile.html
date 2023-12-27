@@ -1,54 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="css/manage.css" />
-    <script src="bootstrap/js/jquery-2.1.1.js"></script>
-    <script src="bootstrap/js/bootstrap.js"></script>
-    <title>Document</title>
-  </head>
-  <body>
-    <div class="container-fluid">
-      <!-- 顶部图片 -->
-      <div class="row">
-        <img src="image/weixiu.svg" class="full-screen-300px margin-top-30px" />
-      </div>
+<html>
 
-      <!-- 查询表单 -->
-      <div class="row search-form">
-        <input
-          type="text"
-          class="form-control search-input"
-          placeholder="请输入任务编号或手机号码"
-        />
-        <button class="btn btn-primary btn-lg btn-block margin-top-15px">
-          查询信息
-        </button>
-      </div>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <!--  -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-      <!-- 详细列表 -->
-      <div class="row search-list">
-        <table class="table table-bordered">
-          <tr>
-            <td>业务编号</td>
-            <td>B20210304108</td>
-          </tr>
-          <tr>
-            <td>维修项目</td>
-            <td>换电池</td>
-          </tr>
-          <tr>
-            <td>客户姓名</td>
-            <td>silky</td>
-          </tr>
-          <tr>
-            <td>维修状态</td>
-            <td>取机中</td>
-          </tr>
-        </table>
-      </div>
+  <!-- 引入CSS -->
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
+  <!-- 引入jquery-->
+  <script src="bootstrap/js/jquery-2.1.1.js"></script>
+  <!-- 引入bootstrap JS -->
+  <script src="bootstrap/js/bootstrap.js"></script>
+  <!-- 引入vue3 -->
+  <script src="js/vue.global.js"></script>
+  <!-- 映入配置信息 -->
+  <script src="js/config.js"> </script>
+  <style>
+    input {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: cornflowerblue;
+    }
+
+    td {
+      text-align: center;
+    }
+
+    .xx {
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container" id="app">
+    <div class="row">
+      <img src="image/mobile.jpg" style="width: 100%;" />
     </div>
-  </body>
+    <div class="row" style="margin: 10px 5px;">
+      <input type="text" class="form-control" placeholder="请输入任务编号或手机号码" id="T_phone" />
+      <span style="color: red;font-weight: bold;margin-top: 4px;">{{msg}}</span>
+      <button class="btn btn-primary btn-lg btn-block" style="margin-top: 5px;" @click="selectTaskData()">查询信息</button>
+    </div>
+    <div class="row" style="margin: 10px 5px;">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+          <tr>
+            <td class="xx">业务编号</td>
+            <td v-for="task in task_list">{{task.task_no}}</td>
+          </tr>
+          <tr>
+            <td class="xx">维修项目</td>
+            <td v-for="task in task_list">{{task.service_item}}</td>
+          </tr>
+          <tr>
+            <td class="xx">客户姓名</td>
+            <td v-for="task in task_list">{{task.cus_name}}</td>
+          </tr>
+          </tr>
+        <tbody>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+</body>
+
+<script>
+
+  //定义
+  const {
+    createApp
+  } = Vue
+  createApp({
+    data() {
+      return { //数据 与界面绑定
+        msg: "",
+        task_list: [],//任务数据
+        task: {}//"cus_name":"大哥"，"cus_phone":"123"
+      }
+    },
+    mounted() { //vue加载时执行此处的代码
+      var that = this;
+    },
+    methods: {
+      selectTaskData: function () { //加载任务数据
+        var that = this;
+        var Tphone = $('#T_phone').val();
+        console.log(Tphone);
+        $.post(base_url + "/TaskServlet", {
+          "choose": "select",
+          "T_phone": Tphone
+        },
+          function (data) {
+            console.log(data);
+            if (data.code == 0) {
+              that.msg = "请输入正确订单编号或手机号";
+            } else {
+              that.msg = "";
+            }
+            console.log(data);
+            //将查询的配件数量赋值给vue3中的变量
+            that.task_list = data.data;
+          });
+
+      },
+
+    }
+  }).mount('#app') //加载APP
+</script>
+
 </html>

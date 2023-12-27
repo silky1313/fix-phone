@@ -21,7 +21,7 @@ public class TaskService {
         return result;
     }
 
-    public AjaxResult deleteTaskById(HttpServletRequest request) {
+    public AjaxResult changeTaskById(HttpServletRequest request) {
         AjaxResult result = null;
         String id = request.getParameter("id");
         int success = taskDao.deleteTaskById(Integer.parseInt(id));
@@ -36,13 +36,19 @@ public class TaskService {
 
     public AjaxResult insertTask(HttpServletRequest request) {
         AjaxResult result = null;
-        String id = request.getParameter("id");
-        int success = taskDao.deleteTaskById(Integer.parseInt(id));
+        String cus_name = request.getParameter("cus_name");
+        String cus_phone = request.getParameter("cus_phone");
+        String service_item = request.getParameter("service_item");
+
+        System.out.println(cus_name);
+        System.out.println(cus_phone);
+        Task task = new Task(cus_name, cus_phone, service_item);
+        int success = taskDao.insertTask(task);
 
         if (success == 1) {
-            result = AjaxResult.success("删除成功");
+            result = AjaxResult.success("添加成功");
         } else {
-            result = AjaxResult.fail("删除失败");
+            result = AjaxResult.fail("添加失败，电话号码不能重复");
         }
         return result;
     }
@@ -58,6 +64,20 @@ public class TaskService {
         } else {
             result = AjaxResult.fail("更新状态失败");
         }
+        return result;
+    }
+
+    public AjaxResult findByPhone(HttpServletRequest request) {
+        String T_phone = request.getParameter("T_phone");
+        AjaxResult result = null;
+        //查询所有配件
+        List<Task> list = taskDao.findByPhone(T_phone);
+        if (list != null && !list.isEmpty()) {
+            result = AjaxResult.success("查询成功", list, 1);
+        } else {
+            result = AjaxResult.fail("无任务数据", 0);
+        }
+
         return result;
     }
 }

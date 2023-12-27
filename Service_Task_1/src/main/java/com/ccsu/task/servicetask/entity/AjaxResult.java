@@ -22,6 +22,18 @@ public class AjaxResult {
         return ajaxResult;
     }
 
+    public static AjaxResult success(String message, int code) {
+        AjaxResult ajaxResult = success(message);
+        ajaxResult.setCode(code);
+        return ajaxResult;
+    }
+
+    public static AjaxResult success(String message, Object data, int code) {
+        AjaxResult ajaxResult = success(message, data);
+        ajaxResult.setCode(code);
+        return ajaxResult;
+    }
+
     public static AjaxResult fail(String msg) {
         AjaxResult result = new AjaxResult();
         result.setCode(404);

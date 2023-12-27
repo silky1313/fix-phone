@@ -1,264 +1,400 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title></title>
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="css/manage.css" />
-    <!-- animate -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
-    <script src="bootstrap/js/jquery-2.1.1.js"></script>
-    <script src="bootstrap/js/bootstrap.js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/check.js"></script>
-    <script src="js/vue.global.js"></script>
-  </head>
-  <body>
-    <div class="container-fluid" id="app">
-      <!-- 图像头start -->
-      <div class="row">
-        <img class="full-screen-250px" src="image/head2.jpg" />
-      </div>
-      <!-- 图像头end -->
 
-      <!-- 菜单start -->
-      <div class="row margin-top-15px">
-        <!-- 左边的菜单start -->
-        <div class="col-md-3">
-          <div class="panel panel-primary">
-            <!-- Default panel contents -->
-            <div class="panel-heading">
-              手机维修管理系统
-              <span id="info"></span>
-            </div>
-            <!-- List group -->
-            <ul class="list-group">
-              <a
-                href="javascript:void(0)"
-                @click="showPanel('cus')"
-                class="list-group-item"
-              >
-                客户接待
-              </a>
-              <a
-                href="javascript:void(0)"
-                @click="showPanel('fix')"
-                class="list-group-item"
-              >
-                维修管理
-              </a>
-              <a
-                href="javascript:void(0)"
-                @click="showPanel('fitting')"
-                class="list-group-item"
-              >
-                库存查询
-              </a>
-              <a href="#" class="list-group-item">账户管理</a>
-              <a
-                href="javascript:void(0)"
-                @click="exitLogin()"
-                class="list-group-item"
-              >
-                退出登录
-              </a>
-            </ul>
-          </div>
-        </div>
-        <!-- 左边的菜单end -->
+<head>
+  <meta charset="utf-8" />
+  <title></title>
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
+  <link rel="stylesheet" href="css/manage.css" />
+  <!-- animate -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <script src="bootstrap/js/jquery-2.1.1.js"></script>
+  <script src="bootstrap/js/bootstrap.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/check.js"></script>
+  <script src="js/vue.global.js"></script>
+</head>
 
-        <!-- 右边的cusPanel start -->
-        <div
-          class="animate__animated animate__bounceInRight col-md-9"
-          v-show="cusView"
-        >
-          <div class="panel panel-primary">
-            <!-- Default panel contents -->
-            <div class="panel-heading">客户业务代理列表</div>
-            <!-- 菜单表单start -->
-            <div class="panel-body">
-              <form class="form-inline flex-container">
-                <div class="form-group">
-                  <label for="exampleInputName2">客户姓名：</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="task.cus_name"
-                    placeholder="请输入姓名"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail2">客户电话：</label>
-                  <input
-                    type="tel"
-                    class="form-control"
-                    v-model="task.cus_phone"
-                    placeholder="请输入电话"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail2">维修项目：</label>
-                  <select v-model="task.service_item" class="form-control">
-                    <option>电池</option>
-                    <option>屏幕</option>
-                    <option>背板</option>
-                    <option>主板</option>
-                    <option>摄像头</option>
-                  </select>
-                  <button class="btn btn-warning" @click.prevent="insertTask()">
-                    保存
-                  </button>
-                </div>
-              </form>
-            </div>
-            <!-- 菜单表单end -->
-            <!-- List group -->
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>任务编号</th>
-                  <th>客户姓名</th>
-                  <th>客户电话</th>
-                  <th>维修项目</th>
-                  <th>状态</th>
-                  <th>操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in tasks">
-                  <td>{{item.task_no}}</td>
-                  <td>{{item.cus_name}}</td>
-                  <td>{{item.cus_phone}}</td>
-                  <td>{{item.service_item}}</td>
-                  <td>
-                    {{item.task_state == 0 ? "录单完成":(item.task_state == 1 ?
-                    "维修中" : "等待取机") }}
-                  </td>
-                  <td>
-                    <button
-                      v-show="item.task_state == 0"
-                      class="btn btn-warning"
-                      @click="deleteTask(item.task_id, item.task_no)"
-                    >
-                      删除维修单
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- 右边的cusPanel end -->
-
-        <!-- 右边的库存panel start -->
-        <div
-          class="animate__animated animate__bounceInRight col-md-9"
-          v-show="fittingView"
-        >
-          <div class="panel panel-primary">
-            <!-- Default panel contents -->
-            <div class="panel-heading">配件列表</div>
-            <!-- List group -->
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>配件编号</th>
-                  <th>配件名称</th>
-                  <th>库存数量</th>
-                  <th>配件厂地</th>
-                  <th>修改数量</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="fitting in fittings">
-                  <td>{{fitting.fit_id}}</td>
-                  <td>{{fitting.fit_name}}</td>
-                  <td>{{fitting.fit_qty}}</td>
-                  <td>{{fitting.fit_factory}}</td>
-                  <td>
-                    <form class="form-inline">
-                      <div class="form-group">
-                        <input
-                          type="text"
-                          class="form-control"
-                          :id="'quantity-' + fitting.fit_id"
-                          placeholder="请输入修改数量"
-                        />
-                      </div>
-                      <button
-                        class="btn btn-success"
-                        @click.prevent="updatefittingQuantity(fitting.fit_id)"
-                      >
-                        确认修改
-                      </button>
-                    </form>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <!-- 右边的库存panel end-->
-
-        <!-- 右边的维修fixPanel start -->
-        <div
-          class="animate__animated animate__bounceInRight col-md-9"
-          v-show="fixView"
-        >
-          <div class="panel panel-primary">
-            <!-- Default panel contents -->
-            <div class="panel-heading">维修业务列表</div>
-            <!-- List group -->
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>任务编号</th>
-                  <th>客户姓名</th>
-                  <th>客户电话</th>
-                  <th>维修项目</th>
-                  <th>状态</th>
-                  <th>操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in tasks">
-                  <td>{{item.task_no}}</td>
-                  <td>{{item.cus_name}}</td>
-                  <td>{{item.cus_phone}}</td>
-                  <td>{{item.service_item}}</td>
-                  <td>
-                    {{item.task_state == 0 ? "录单完成": (item.task_state == 1 ?
-                    "维修中" : "等待取机") }}
-                  </td>
-                  <td>
-                    <button
-                      v-show="item.task_state == 0"
-                      class="btn btn-success"
-                      @click="changeState(item.task_id, 1);"
-                    >
-                      开始维修
-                    </button>
-                    <button
-                      v-show="item.task_state == 1"
-                      class="btn btn-warning"
-                      @click="changeState(item.task_id, 2)"
-                    >
-                      完成维修
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <!-- 右边的fixPanel end -->
-      </div>
-      <!-- 菜单end -->
+<body>
+  <div class="container-fluid" id="app">
+    <!-- 图像头start -->
+    <div class="row">
+      <img class="full-screen-250px" src="image/head2.jpg" />
     </div>
-    <script src="js/manage.js"></script>
-  </body>
+    <!-- 图像头end -->
+
+    <!-- 菜单start -->
+    <div class="row margin-top-15px">
+      <!-- 左边的菜单start -->
+      <div class="col-md-3">
+        <div class="panel panel-primary">
+          <!-- Default panel contents -->
+          <div class="panel-heading">
+            手机维修管理系统
+            <span id="info"></span>
+          </div>
+          <!-- List group -->
+          <ul class="list-group">
+            <a href="javascript:void(0)" @click="showPanel('cus')" class="list-group-item" :class="{info: cusView}">
+              客户接待
+            </a>
+            <a href="javascript:void(0)" @click="showPanel('fix')" class="list-group-item" :class="{info: fixView}">
+              维修管理
+            </a>
+            <a href="javascript:void(0)" @click="showPanel('fitting')" class="list-group-item"
+              :class="{info: fittingView}">
+              库存查询
+            </a>
+            <a href="javascript:void(0)" @click="showPanel('account')" class="list-group-item">账户管理</a>
+            <a href="javascript:void(0)" @click="exitLogin()" class="list-group-item">
+              退出登录
+            </a>
+          </ul>
+        </div>
+      </div>
+      <!-- 左边的菜单end -->
+
+      <!-- 右边的cusPanel start -->
+      <div class="animate__animated animate__bounceInRight col-md-9" v-show="cusView">
+        <div class="panel panel-primary">
+          <!-- Default panel contents -->
+          <div class="panel-heading">客户业务代理列表</div>
+          <!-- 菜单表单start -->
+          <div class="panel-body">
+            <form class="form-inline flex-container">
+              <div class="form-group">
+                <label for="exampleInputName2">客户姓名：</label>
+                <input type="text" class="form-control" v-model="task.cus_name" placeholder="请输入姓名" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail2">客户电话：</label>
+                <input type="tel" class="form-control" v-model="task.cus_phone" placeholder="请输入电话" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail2">维修项目：</label>
+                <select v-model="task.service_item" class="form-control">
+                  <option v-for="item in fittings">
+                    {{item.fit_name}}
+                  </option>
+                </select>
+                <button type="button" class="btn btn-warning" @click="insertTask()">
+                  保存
+                </button>
+              </div>
+            </form>
+          </div>
+          <!-- 菜单表单end -->
+          <!-- List group -->
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>任务编号</th>
+                <th>客户姓名</th>
+                <th>客户电话</th>
+                <th>维修项目</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in tasks">
+                <td>{{item.task_no}}</td>
+                <td>{{item.cus_name}}</td>
+                <td>{{item.cus_phone}}</td>
+                <td>{{item.service_item}}</td>
+                <td>
+                  {{item.task_state == 0 ? "录单完成":(item.task_state == 1 ?
+                  "维修中" : "等待取机") }}
+                </td>
+                <td>
+                  <button v-if="item.task_state != 1"
+                    :class="{ 'btn': true, 'btn-warning': item.task_state === 0, 'btn-success': item.task_state === 2 }"
+                    @click="deleteTask(item.task_id, item.cus_name, item.task_state)">
+                    {{ item.task_state == 0 ? "删除订单" : "点击完成订单" }}
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- 右边的cusPanel end -->
+
+      <!-- 右边的库存panel start -->
+      <div class="animate__animated animate__bounceInRight col-md-9" v-show="fittingView">
+        <div class="panel panel-primary">
+          <!-- Default panel contents -->
+          <div class="panel-heading">配件列表</div>
+          <!-- 表单 -->
+          <form class="form-inline">
+            <div class="form-group margin-50px">
+              <label for="exampleInputName2">配件名称：</label>
+              <input type="text" class="form-control" v-model="fitting.fit_name" placeholder="请输入配件名称" />
+            </div>
+            <div class="form-group margin-50px">
+              <label for="exampleInputName2">库存数量：</label>
+              <input type="text" class="form-control" v-model="fitting.fit_qty" placeholder="请输入库存数量" />
+            </div>
+            <div class="form-group margin-50px">
+              <label for="exampleInputEmail2">配件厂地：</label>
+              <input type="tel" class="form-control" v-model="fitting.fit_factory" placeholder="请输入配件厂地" />
+            </div>
+            <button class="btn btn-success margin-50px" @click.prevent="insertFitting()">
+              确认添加
+            </button>
+          </form>
+          <!-- List group -->
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>配件编号</th>
+                <th>配件名称</th>
+                <th>库存数量</th>
+                <th>配件厂地</th>
+                <th>修改数量</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="fitting in fittings">
+                <td>{{fitting.fit_id}}</td>
+                <td>{{fitting.fit_name}}</td>
+                <td>{{fitting.fit_qty}}</td>
+                <td>{{fitting.fit_factory}}</td>
+                <td>
+                  <form class="form-inline">
+                    <div class="form-group">
+                      <input type="text" class="form-control" :id="'quantity-' + fitting.fit_id"
+                        placeholder="请输入修改数量" />
+                    </div>
+                    <button class="btn btn-success" @click.prevent="updatefittingQuantity(fitting.fit_id)">
+                      确认修改
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- 右边的库存panel end-->
+
+      <!-- 右边的维修fixPanel start -->
+      <div class="animate__animated animate__bounceInRight col-md-9" v-show="fixView">
+        <div class="panel panel-primary">
+          <!-- Default panel contents -->
+          <div class="panel-heading">维修业务列表</div>
+          <!-- List group -->
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>任务编号</th>
+                <th>客户姓名</th>
+                <th>客户电话</th>
+                <th>维修项目</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in tasks">
+                <td>{{item.task_no}}</td>
+                <td>{{item.cus_name}}</td>
+                <td>{{item.cus_phone}}</td>
+                <td>{{item.service_item}}</td>
+                <td>
+                  {{item.task_state == 0 ? "录单完成": (item.task_state == 1 ?
+                  "维修中" : "等待取机") }}
+                </td>
+                <td>
+                  <button v-show="item.task_state == 0" class="btn btn-success"
+                    @click="changeState(item.task_id, 1, item.service_item);">
+                    开始维修
+                  </button>
+                  <button v-show="item.task_state == 1" class="btn btn-warning"
+                    @click="changeState(item.task_id, 2, item.service_item)">
+                    完成维修
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- 右边的fixPanel end -->
+
+      <!-- 右边的账户管理adminPanel start -->
+      <div class="animate__animated animate__bounceInRight col-md-9" v-show="accountView">
+        <div class="panel panel-primary">
+          <!-- 菜单表单头 -->
+          <div class="panel-heading">账户列表</div>
+          <!-- 菜单表单start -->
+          <div class="panel-body">
+            <form class="form-inline">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAccountModal">
+                添加账户
+              </button>
+            </form>
+          </div>
+          <!-- 菜单表单end -->
+          <!-- List group -->
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>账户名</th>
+                <th>账户密码</th>
+                <th>账户职位</th>
+                <th>账户状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="account in account_list">
+                <td>{{account.admin_name}}</td>
+                <td>{{account.admin_pwd}}</td>
+                <td>{{account.admin_role == 0?"管理员":(account.admin_role == 1?"前台接待":(account.admin_role ==
+                  2?"维修师傅":"检测师傅"))}}
+                </td>
+                <td>
+                  {{account.admin_state == 0?"正常":(account.admin_state == 1?"锁定":"注销")}}
+                </td>
+                <td>
+                  <button type="button" @click="memaccount(account)" class="btn btn-primary" data-toggle="modal"
+                    data-target="#updateAccountModal">
+                    修改账户信息
+                  </button>
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- 右边的账户管理adminPanel end -->
+    </div>
+    <!-- 菜单end -->
+
+    <!-- 修改账户弹窗start -->
+    <div class="modal fade" id="updateAccountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <!-- 弹窗头start -->
+          <div class="modal-header">
+            <h1 class="modal-title" id="accountModalLabel">修改账户信息</h1>
+            <!-- //关闭弹窗按钮 -->
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!-- 弹窗头end -->
+          <!-- 弹窗内容start -->
+          <div class="modal-body">
+            <!-- 在这里添加账户信息的表单或其他内容 -->
+            <!-- 表单 -->
+            <!-- 表单 -->
+            <form>
+              <div class="form-group">
+                <label for="accountName">账户名称</label>
+                <input type="text" class="form-control" id="accountName" v-model="accounts.admin_name"
+                  placeholder="请输入账户名">
+              </div>
+              <div class="form-group">
+                <label for="accountPassword">账户密码</label>
+                <input type="text" class="form-control" id="accountPassword" v-model="accounts.admin_pwd"
+                  placeholder="请输入账户密码">
+              </div>
+              <!-- accounts.account_role -->
+              <div class="form-group">
+                <label for="accountPosition">账户职位</label>
+                <select class="form-control" v-model="accounts.admin_role">
+                  <option value="" class="grey-option" disabled>请选择账户职位</option>
+                  <option v-for="option in options_role" :value="option.value">{{ option.text }}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="accountStatus">账户状态</label>
+                <select class="form-control" v-model="accounts.admin_state">
+                  <option value="" class="grey-option" disabled>请选择账户状态</option>
+                  <option v-for="option in options_state" :value="option.value">{{ option.text }}
+                  </option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <!-- 弹窗内容end -->
+          <!-- 弹窗按钮start-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            <button type="button" @click="updateaccount()" class="btn btn-primary" data-dismiss="modal">确认修改</button>
+          </div>
+          <!-- 弹窗按钮end-->
+        </div>
+      </div>
+    </div>
+    <!-- 修改账户弹窗end -->
+
+    <!-- 添加账户弹窗start -->
+    <div class="modal fade" id="addAccountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <!-- 弹窗头start -->
+          <div class="modal-header">
+            <h1 class="modal-title" id="accountModalLabel">添加账户</h1>
+            <!-- //关闭弹窗按钮 -->
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!-- 弹窗头end -->
+          <!-- 弹窗内容start -->
+          <div class="modal-body">
+            <!-- 在这里添加账户信息的表单或其他内容 -->
+            <!-- 表单start -->
+            <form>
+              <div class="form-group">
+                <label for="accountName">账户名称</label>
+                <input type="text" class="form-control" id="accountName" v-model="aaccount.admin_name"
+                  placeholder="请输入账户名">
+              </div>
+              <div class="form-group">
+                <label for="accountPassword">账户密码</label>
+                <input type="text" class="form-control" id="accountPassword" v-model="aaccount.admin_pwd"
+                  placeholder="请输入账户密码">
+              </div>
+              <div class="form-group">
+                <label for="accountPosition">账户职位</label>
+                <select class="form-control" v-model="aaccount.admin_role">
+                  <option value="" class="grey-option" disabled>请选择账户职位</option>
+                  <option v-for="option in options_role" :value="option.value">{{ option.text }}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="accountStatus">账户状态</label>
+                <select class="form-control" v-model="aaccount.admin_state">
+                  <option value="" class="grey-option" disabled>请选择账户状态</option>
+                  <option v-for="option in options_state" :value="option.value">{{ option.text }}
+                  </option>
+                </select>
+              </div>
+            </form>
+            <!-- 表单end -->
+          </div>
+          <!-- 弹窗内容end -->
+          <!-- 弹窗按钮start-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            <button type="button" @click="addaccount()" class="btn btn-primary" data-dismiss="modal">确认添加</button>
+          </div>
+          <!-- 弹窗按钮end-->
+        </div>
+      </div>
+    </div>
+    <!-- 添加账户弹窗end -->
+  </div>
+  <script src="js/manage.js"></script>
+</body>
+
 </html>

@@ -1,112 +1,163 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="css/manage.css" />
-    <script src="bootstrap/js/jquery-2.1.1.js"></script>
-    <script src="bootstrap/js/bootstrap.js"></script>
-    <script src="js/vue.global.js"></script>
-    <script src="js/config.js"></script>
-    <style>
-      body {
-        background: url(image/background.svg) no-repeat;
-        background-size: 100% 100%;
-        background-attachment: fixed;
-      }
-    </style>
-    <title>Document</title>
-  </head>
-  <body class="login-body">
-    <div class="container" id="app">
-      <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-2">
-          <img src="image/logo.jpg" class="logo" />
-        </div>
-        <div class="col-md-6 login-form">
-          <h2>手机维修店服务系统V2.0</h2>
-          <hr />
-          <form class="form-horizontal">
-            <div class="form-group">
-              <label for="admin_name" class="col-sm-2 control-label">
-                账户名称
-              </label>
-              <div class="col-sm-10">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="admin_name"
-                  placeholder="请输入账户名称"
-                />
-              </div>
-            </div>
+<html>
 
-            <div class="form-group">
-              <label class="col-sm-2 control-label" for="admin_password">
-                账户密码
-              </label>
-              <div class="col-sm-10">
-                <input
-                  type="password"
-                  class="form-control"
-                  id="admin_password"
-                  placeholder="请输入账户密码"
-                />
-                <span class="warning-text">{{msg}}</span>
-              </div>
-            </div>
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" />
-                记住密码
-              </label>
-            </div>
-            <button
-              type="button"
-              @click="login()"
-              class="btn btn-primary btn-lg btn-block"
-            >
-              登录
-            </button>
-          </form>
-        </div>
-        <div class="col-md-2"></div>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <!-- 引入CSS -->
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
+  <!-- 引入jquery-->
+  <script src="bootstrap/js/jquery-2.1.1.js"></script>
+  <!-- 引入bootstrap JS -->
+  <script src="bootstrap/js/bootstrap.js"></script>
+
+  <script src="js/config.js"></script>
+
+  <script src="js/vue.global.js"></script>
+</head>
+<style>
+  img {
+    width: 220px;
+    height: 220px;
+    border-radius: 50px;
+  }
+
+  body {
+    background: url(image/background.svg) no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+  }
+</style>
+
+<body>
+  <div class="container" id="app">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <!-- 图片start -->
+      <div class="col-md-2" style="margin-top: 250px;">
+        <img src="image/logo.jpg" />
       </div>
-    </div>
-  </body>
-  <script>
-    const { createApp } = Vue;
-    createApp({
-      data() {
-        return {
-          msg: "",
-        };
-      },
-      mounted() {},
-      methods: {
-        login: function () {
-          var that = this;
-          var admin_name = $("#admin_name").val();
-          var admin_password = $("#admin_password").val();
-          var url = base_url + "/AccountServlet";
+      <!-- 图片end -->
+      <!-- 表单start -->
+      <div class="col-md-6" style="margin-top: 180px;margin-left: 50px;">
+        <h2>手机维修服务系统V1.0</h2>
+        <hr />
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">账户名称</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control input-lg" id="admin_name" placeholder="请输入账户名称">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputPassword3" class="col-sm-2  control-label">账户密码</label>
+            <div class="col-sm-10">
+              <input type="password" class="form-control input-lg" id="admin_pwd" placeholder="请输入账户密码">
+              <span style="color: red;font-weight: bold;margin-top: 4px;">{{msg}}</span>
+            </div>
+          </div>
+          <!-- 验证码start -->
+          <div class="form-group">
+            <label for="inputPassword3" class="col-sm-2  control-label" style="
+									font-size:25px;   border: 2px solid #ccc; border-radius: 5px;" @click="createCode()" id="yzm">
+            </label>
+            <div class="col-sm-4" style="margin-top: 0px;">
+              <input type="text" class="form-control input-lg " style="font-size: 30px;" placeholder="验证码"
+                id="yanzhengma">
+            </div>
 
-          $.post(
-            url,
-            { admin_name: admin_name, admin_password: admin_password },
-            function (data) {
-              if (data.code >= 200 && data.code <= 299) {
+          </div>
+          <!-- 验证码end -->
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"> 记住密码
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="button" @click="login()" class="btn btn-primary btn-lg btn-block">登录</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- 表单start -->
+      <div class="col-md-2"></div>
+    </div>
+  </div>
+</body>
+<script>
+  //定义
+  const {
+    createApp
+  } = Vue
+  createApp({
+    data() {
+      return { //数据 与界面绑定
+        msg: "",
+        code: "",
+      }
+    },
+    mounted() { //vue加载时执行此处的代码
+      this.createCode();
+    },
+    methods: {
+      login: function () {
+        var that = this;
+        //取得输入框中的账号密码
+        var admin_name = $('#admin_name').val();
+        var admin_pwd = $('#admin_pwd').val();
+        var yzm = $('#yanzhengma').val();
+        console.log(admin_name + "==" + admin_pwd + "==" + yzm + "==" + code)
+        //调用Ajax查询
+        $.post(
+          base_url + "/AccountServlet", //请求地址
+          {
+            "admin_name": admin_name,
+            "admin_pwd": admin_pwd,
+            choose: "denlu"
+          },
+          function (data) { //回调函数
+            //成功则跳转到主页
+            console.log(data);
+            if (data.code == 1) {
+              if (yzm == code) {
                 location.href = "manage.html";
+                //将名字和token存在localstorage
                 localStorage.setItem("admin_name", data.data.admin_name);
                 localStorage.setItem("token", data.data.token);
               } else {
-                that.msg = data.message;
+                // 验证码错误
+                that.msg = "请输入正确的验证码";
+                return;
               }
+            } else {
+              //失败就提示
+              that.msg = data.message;
             }
-          );
-        },
+          }
+        );
       },
-    }).mount("#app");
-  </script>
+      createCode: function () {
+        code = ''; //首先默认code为空字符串
+        var codeLength = 4; //设置长度，这里看需求，我这里设置了4
+        var codeV = $('#yzm');
+        //设置随机字符
+        var random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+          'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
+          'Z');
+        for (var i = 0; i < codeLength; i++) { //循环codeLength 我设置的4就是循环4次   
+          var index = Math.floor(Math.random() * 36); //设置随机数范围,这设置为0 ~ 36  
+          code += random[index]; //字符串拼接 将每次随机的字符 进行拼接
+        }
+        codeV.text(code); //将拼接好的字符串赋值给展示的Value
+      }
+
+    }
+  }).mount('#app') //加载APP
+</script>
+
 </html>
